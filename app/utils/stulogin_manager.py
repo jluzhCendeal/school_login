@@ -65,6 +65,7 @@ def login_required(next_func):
 
             if loginService.login_user(user):
                 return next_func(loginService, *args, **kwargs)
-        return json.dumps({'code': '-1', 'msg': '未登录!'})
+        from app.utils.jsonp import JsonpFormat
+        return JsonpFormat.callback({'code': '-1', 'msg': '未登录!'})
 
     return decorated

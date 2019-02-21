@@ -12,12 +12,12 @@ def login():
     from app.utils.stulogin_manager import LoginService
     loginService = LoginService()
     flag = loginService.login(yhm, mm)
-    data = {'msg': '未登录！', 'code': '-1', 'data': ''}
+    data = {'msg': '未登录！', 'code': '-1', 'data': {}}
     if flag:
         data['code'] = 0
-        data['msg'] = '已登陆！'
+        data['msg'] = '已登录！'
         user = base64.b64encode((yhm + '\n' + mm).encode()).decode()
-        data['data'] = user
+        data['data'] = {'user': user}
         resp = make_response(JsonpFormat.callback(data))
         resp.set_cookie('user', user)
         loginService.logout()
