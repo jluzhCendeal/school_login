@@ -33,7 +33,8 @@ class Score(DataBase):
                 'total_credit': 0,
                 'required_credit': 0,
                 'selected_major_credit': 0,
-                'public_credit': 0
+                'public_credit': 0,
+                'effective_total': 0
                 }
         total = source_list['total']
         gpa = 0
@@ -43,12 +44,14 @@ class Score(DataBase):
             percentile += int(i['percentile'])
 
             data['total_credit'] += float(i['credit'])
-            if i['type'] == '06':
-                data['public_credit'] += float(i['credit'])
-            elif i['type'] == '01':
-                data['required_credit'] += float(i['credit'])
-            elif i['type'] == '03':
-                data['selected_major_credit'] += float(i['credit'])
+            if i['percentile'] >= 60:
+                data['effective_total'] += 1
+                if i['type'] == '06':
+                    data['public_credit'] += float(i['credit'])
+                elif i['type'] == '01':
+                    data['required_credit'] += float(i['credit'])
+                elif i['type'] == '03':
+                    data['selected_major_credit'] += float(i['credit'])
         if total is not 0:
             data['per_percentile'] = percentile // total
             data['per_gpa'] = round(gpa / total, 2)
