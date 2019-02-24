@@ -42,7 +42,7 @@ class Score(DataBase):
         for i in source_list['list']:
             gpa += float(i['gpa'])
             percentile += int(i['percentile'])
-            data['total_credit'] += float(i['credit'])
+
             flag = True if float(i['credit']) >= 60 else False
             index = 0
             if flag:
@@ -50,6 +50,9 @@ class Score(DataBase):
             else:
                 index = 1
                 data['all'][index] += 1
+
+            data['total_credit'][index] += float(i['credit'])
+
             if i['type'] == '06':
                 data['public_credit'][index] += float(i['credit'])
             elif i['type'] == '01':
