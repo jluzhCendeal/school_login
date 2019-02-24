@@ -43,9 +43,8 @@ class Score(DataBase):
             gpa += float(i['gpa'])
             percentile += int(i['percentile'])
 
-            flag = True if float(i['credit']) >= 60 else False
             index = 0
-            if flag:
+            if float(i['percentile']) >= 60:
                 data['all'][index] += 1
             else:
                 index = 1
