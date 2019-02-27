@@ -31,33 +31,40 @@ class Score(DataBase):
         data = {'per_gpa': 0,
                 'per_percentile': 0,
                 'total_credit': [0, 0],
-                'required_credit': [0, 0],
-                'selected_major_credit': [0, 0],
-                'public_credit': [0, 0],
+                'required_credit': [0, 0, 0, 0],
+                'selected_major_credit': [0, 0, 0, 0],
+                'public_credit': [0, 0, 0, 0],
                 'all': [0, 0]
                 }
+        belong_to = {
+            '06': 'public_credit',
+            '01': 'required_credit',
+            '03': 'selected_major_credit'
+        }
         total = source_list['total']
         gpa = 0
         percentile = 0
         for i in source_list['list']:
             gpa += float(i['gpa'])
             percentile += int(i['percentile'])
-
-            index = 0
+            index = 1  # 挂科总学分
+            is_well = 3  # 挂科门数
             if float(i['percentile']) >= 60:
-                data['all'][index] += 1
-            else:
-                index = 1
-                data['all'][index] += 1
-
+                index = 0  # 通过总学分
+                is_well = 2  # 通过门数
+            data['all'][index] += 1
             data['total_credit'][index] += float(i['credit'])
-
-            if i['type'] == '06':
-                data['public_credit'][index] += float(i['credit'])
-            elif i['type'] == '01':
-                data['required_credit'][index] += float(i['credit'])
-            elif i['type'] == '03':
-                data['selected_major_credit'][index] += float(i['credit'])
+            data[belong_to[i['type']]][index] += float(i['credit'])
+            data[belong_to[i['type']]][is_well] += 1
+            # if i['type'] == '06':
+            #     data['public_credit'][index] += float(i['credit'])
+            #     data['public_credit'][is_well] += 1
+            # elif i['type'] == '01':
+            #     data['required_credit'][index] += float(i['credit'])
+            #     data['required_credit'][index] += 1
+            # elif i['type'] == '03':
+            #     data['selected_major_credit'][index] += float(i['credit'])
+            #     data['selected_major_credit'][index] += 1
         if total is not 0:
             data['per_percentile'] = percentile // total
             data['per_gpa'] = round(gpa / total, 2)

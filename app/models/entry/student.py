@@ -32,8 +32,8 @@ class Student(DataBase):
 
     # 获取学生阶段
     def get_stu_time_line(self):
-        grades = [{'大一': 1}, {'大二': 2}, {'大三': 3}, {'大四': 4}]
-        terms = [{'第一学期': 1}, {'第二学期': 2}]
+        grades = [{'全部': 0}, {'大一': 1}, {'大二': 2}, {'大三': 3}, {'大四': 4}]
+        terms = [{'全部': 0}, {'第一学期': 1}, {'第二学期': 2}]
         return {'Grades': grades[0:self.get_current_school_year()],
                 'terms': terms,
                 'current': {'Grade': self.get_current_school_year(),
