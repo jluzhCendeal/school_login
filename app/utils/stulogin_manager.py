@@ -58,14 +58,12 @@ def login_required(next_func):
     def decorated(*args, **kwargs):
         loginService = LoginService()
         from flask import request
-        temp = request.cookies.get('user')
+        temp = request.cookies.get('token')
         if temp is not None:
             from app.models.entry.student import Student
             user = Student(temp)
-
             if loginService.login_user(user):
                 return next_func(loginService, *args, **kwargs)
         from app.utils.jsonp import JsonpFormat
         return JsonpFormat.callback({'code': '-1', 'msg': '未登录!'})
-
     return decorated
