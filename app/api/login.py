@@ -5,6 +5,23 @@ from app.utils.jsonp import JsonpFormat
 from . import api
 
 
+@api.route('/auth')
+def auth():
+    data = {'code': '0', 'msg': '已完成!'}
+    token = request.values.get('token')
+    resp = make_response(JsonpFormat.callback(data))
+    resp.set_cookie('token', token)
+    return resp
+
+
+@api.route('/logout')
+def logout():
+    data = {'code': '0', 'msg': '已完成!'}
+    resp = make_response(JsonpFormat.callback(data))
+    resp.set_cookie('token', 'null')
+    return resp
+
+
 @api.route('/login', methods=['post', 'get'])
 def login():
     yhm = request.values.get('yhm')
